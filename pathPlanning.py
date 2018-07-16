@@ -41,9 +41,27 @@ def calculate_offset(img_size, bottom_centr_fitx):
 
 
 def offset_in_centimeters(vehicle_offset, road_width_cm, bottom_left_fitx, bottom_right_fitx):
-    return vehicle_offset/((bottom_right_fitx - bottom_left_fitx) / road_width_cm)
+    return vehicle_offset / ((bottom_right_fitx - bottom_left_fitx) / road_width_cm)
+
 
 # def centimeters_per_pixel(pixels):
 #
 #
 #     return centimeters
+
+def calculate_offset_angle(vehicle_offset_centimeters, maximum_support_vehicle_offset=5, maximum_wheel_angle=30):
+    """ Вычисление угла поворота колес исходя из текущего
+    положения автомобиля (offset in centimeters)  - смещения по горизонтали от центра.
+    """
+    offset_angle = 0
+
+    # смещение влево
+    if vehicle_offset_centimeters >= maximum_support_vehicle_offset:
+        offset_angle = maximum_wheel_angle
+    # смещение вправо
+    elif vehicle_offset_centimeters <= -maximum_support_vehicle_offset:
+        offset_angle = -maximum_wheel_angle
+    else:
+        offset_angle = (maximum_wheel_angle / maximum_support_vehicle_offset) * vehicle_offset_centimeters
+
+    return offset_angle
