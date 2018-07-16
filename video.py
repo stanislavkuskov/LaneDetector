@@ -1,6 +1,6 @@
 from laneFinding import find_lane
 from preprocessing import *
-from pathPlanning import calc_central_line, calculate_offset
+from pathPlanning import calc_central_line, calculate_offset, offset_in_centimeters
 
 
 
@@ -15,6 +15,8 @@ def pipeline_fast(frame, img_size, src, dst):
     center_fitx, center_offset = calc_central_line(left_fitx, right_fitx, img_size, out_img, imshow=True)
     # center_fitx[-1] - last element in array, botton element of road center
     vehicle_offset = calculate_offset(img_size, center_fitx[-1])
+    vehicle_offset_cm = offset_in_centimeters(vehicle_offset, 20, left_fitx[-1],right_fitx[-1])
+    print(vehicle_offset,vehicle_offset_cm)
 
     cv2.waitKey(0)
 

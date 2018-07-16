@@ -1,8 +1,8 @@
 import cv2
 import numpy as np
 
-def calc_central_line(left_fitx, right_fitx, img_size, central_line_img, imshow=False):
 
+def calc_central_line(left_fitx, right_fitx, img_size, central_line_img, imshow=False):
     '''
     1. Вычисление центральной линии по точкам левой и правой линии
     2. Определение смещения от центра в каждой точке центральной линии
@@ -11,9 +11,7 @@ def calc_central_line(left_fitx, right_fitx, img_size, central_line_img, imshow=
     # центральная линия
     centr_fitx = ((right_fitx - left_fitx) / 2) + left_fitx
     # Смещение центральной линии по точкам
-    centr_offset = centr_fitx-(img_size[1]/2)
-
-
+    centr_offset = centr_fitx - (img_size[1] / 2)
 
     if imshow == True:
         # Отрисовка центральной линии на изображении
@@ -33,11 +31,19 @@ def calculate_offset(img_size, bottom_centr_fitx):
     """Вычисляем смещение шасси от центральной линии на изображении
     Смещение в пикселях
     """
-    img_center = img_size[1]/2
-    print(img_center,bottom_centr_fitx)
+    img_center = img_size[1] / 2
+    print(img_center, bottom_centr_fitx)
 
     vehicle_offset = (img_center - bottom_centr_fitx)
-    print(vehicle_offset)
-    # Fit new polynomials to x,y in world space
+
+    # print(vehicle_offset)
+    return vehicle_offset
 
 
+def offset_in_centimeters(vehicle_offset, road_width_cm, bottom_left_fitx, bottom_right_fitx):
+    return vehicle_offset/((bottom_right_fitx - bottom_left_fitx) / road_width_cm)
+
+# def centimeters_per_pixel(pixels):
+#
+#
+#     return centimeters
