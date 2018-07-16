@@ -1,13 +1,22 @@
-from laneFinding import Line, find_base, find_lane, calc_central_line
+from laneFinding import find_lane
 from preprocessing import *
+from pathPlanning import calc_central_line, calculate_offset
+
 
 
 def pipeline_fast(frame, img_size, src, dst):
+    # Preprocessing
     combined_thresholded = colorthresh(frame)
-
     warped_masked_img, M_warp, Minv = warp_image(combined_thresholded, src, dst, (img_size[1], img_size[0]))
+    # lane finding
     ploty, lefty, righty, leftx, rightx, left_fitx, right_fitx, out_img = find_lane(warped_masked_img)
-    central_fitx = calc_central_line(left_fitx, right_fitx, img_size, out_img, imshow=True)
+
+    # print(leftx,left_fitx)
+    center_fitx, center_offset = calc_central_line(left_fitx, right_fitx, img_size, out_img, imshow=True)
+    # center_fitx[-1] - last element in array, botton element of road center
+    vehicle_offset = calculate_offset(img_size, center_fitx[-1])
+
+    cv2.waitKey(0)
 
 
 

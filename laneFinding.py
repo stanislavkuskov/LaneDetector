@@ -27,8 +27,7 @@ class Line():
         # y values for detected line pixels
         self.ally = None
 
-left_lane = Line()
-right_lane = Line()
+
 
 
 def find_base(binary_warped):
@@ -39,8 +38,12 @@ def find_base(binary_warped):
 
     return leftx_base, midpoint, rightx_base
 
+# left_lane = Line()
+# right_lane = Line()
 
 def find_lane(binary_warped):
+    left_lane = Line()
+    right_lane = Line()
 
     leftx_base, midpoint, rightx_base = find_base(binary_warped)
     # print(leftx_base, midpoint, rightx_base)
@@ -250,32 +253,3 @@ def find_lane(binary_warped):
     cv2.imshow("out2",out_img)
 
     return ploty, lefty, righty, leftx, rightx, left_fitx, right_fitx, out_img
-
-def calc_central_line(left_fitx, right_fitx, img_size, central_line_img, imshow=False):
-
-    '''
-    1. Вычисление центральной линии по точкам левой и правой линии
-    2. Определение смещения от центра в каждой точке центральной линии
-
-    '''
-    # центральная линия
-    centr_fitx = ((right_fitx - left_fitx) / 2) + left_fitx
-
-    # Смещение центральной линии по точкам
-    centr_offset = centr_fitx-(img_size[1]/2)
-    if imshow == True:
-        # Отрисовка центральной линии на изображении
-        for i in range(len(centr_fitx)):
-            cv2.circle(central_line_img, (int(centr_fitx[i]), i), 1, (255, 50, 255))
-        cv2.imshow("res", central_line_img)
-
-
-
-    # evklid_distance = np.linalg.norm(centr_fitx - prew_center_fitx)
-    # print(evklid_distance)
-
-    # cv2.waitKey(0)
-
-    # prew_center_fitx = centr_fitx
-
-    return centr_fitx
