@@ -32,7 +32,7 @@ def calculate_offset(img_size, bottom_centr_fitx):
     Смещение в пикселях
     """
     img_center = img_size[1] / 2
-    print(img_center, bottom_centr_fitx)
+    # print(img_center, bottom_centr_fitx)
 
     vehicle_offset = (img_center - bottom_centr_fitx)
 
