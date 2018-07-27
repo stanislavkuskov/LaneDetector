@@ -27,6 +27,8 @@ class Line():
         # y values for detected line pixels
         self.ally = None
 
+left_lane = Line()
+right_lane = Line()
 
 
 
@@ -42,8 +44,7 @@ def find_base(binary_warped):
 # right_lane = Line()
 
 def find_lane(binary_warped):
-    left_lane = Line()
-    right_lane = Line()
+
 
     leftx_base, midpoint, rightx_base = find_base(binary_warped)
     # print(leftx_base, midpoint, rightx_base)
@@ -51,7 +52,7 @@ def find_lane(binary_warped):
     out_img = np.dstack((binary_warped, binary_warped, binary_warped)) * 255
 
     # cv2.imshow("out_img",out_img)
-    nwindows = 5
+    nwindows = 9
     window_height = np.int(binary_warped.shape[0] / nwindows)
     # 10 частей по 20 px. высота окна = 20
     # print(window_height)
@@ -81,6 +82,7 @@ def find_lane(binary_warped):
     # Will start the search from scratch for first frame and then will use margin window
     # If the sanity fails then will search from scratch
     if (left_lane.detected == False) or (right_lane.detected == False):
+        # Если левой или правой линии не найдено то:
 
         for window in range(nwindows):
             # Identify window boundaries in x and y (and right and left)
@@ -159,17 +161,18 @@ def find_lane(binary_warped):
     else:
         right_lane.allx = rightx
         right_lane.ally = righty
-    # Возвращение на дорогу с линии. Когда длины массивов равны, принимает обе линии за одну, расположение левой и правой линии становится одинаковым
-    if (len(leftx)==len(rightx)):
-        leftx = left_lane.allx
-        lefty = left_lane.ally
-        left_lane.detected = False
-        rightx = right_lane.allx
-        righty = right_lane.ally
-        right_lane.detected = False
-    else:
-        right_lane.allx = rightx
-        right_lane.ally = righty
+    # # Возвращение на дорогу с линии. Когда длины массивов равны, принимает обе линии за одну, расположение левой и правой линии становится одинаковым
+    #
+    # if (len(leftx)==len(rightx)):
+    #     leftx = left_lane.allx
+    #     lefty = left_lane.ally
+    #     left_lane.detected = False
+    #     rightx = right_lane.allx
+    #     righty = right_lane.ally
+    #     right_lane.detected = False
+    # else:
+    #     right_lane.allx = rightx
+    #     right_lane.ally = righty
 
     # Fit a second order polynomial to each
     left_fit = np.polyfit(lefty, leftx, 2)
@@ -243,7 +246,7 @@ def find_lane(binary_warped):
     # Generate x and y values for plotting
     # ploty = np.linspace(0, 720-1, 720 )
 
-    ploty = np.linspace(0, 200 - 1, 200)
+    ploty = np.linspace(0, binary_warped.shape[0] - 1, binary_warped.shape[0])
     left_fitx = left_lane.current_fit[0] * ploty ** 2 + left_lane.current_fit[1] * ploty + left_lane.current_fit[2]
     right_fitx = right_lane.current_fit[0] * ploty ** 2 + right_lane.current_fit[1] * ploty + right_lane.current_fit[2]
 
