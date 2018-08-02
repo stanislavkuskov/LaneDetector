@@ -27,6 +27,9 @@ class Line():
         # y values for detected line pixels
         self.ally = None
 
+
+
+
 left_lane = Line()
 right_lane = Line()
 
@@ -44,7 +47,7 @@ def find_base(binary_warped):
 # right_lane = Line()
 
 def find_lane(binary_warped):
-
+    flag_same_lines = False
 
     leftx_base, midpoint, rightx_base = find_base(binary_warped)
     # print(leftx_base, midpoint, rightx_base)
@@ -163,16 +166,17 @@ def find_lane(binary_warped):
         right_lane.ally = righty
     # # Возвращение на дорогу с линии. Когда длины массивов равны, принимает обе линии за одну, расположение левой и правой линии становится одинаковым
     #
-    # if (len(leftx)==len(rightx)):
-    #     leftx = left_lane.allx
-    #     lefty = left_lane.ally
-    #     left_lane.detected = False
-    #     rightx = right_lane.allx
-    #     righty = right_lane.ally
-    #     right_lane.detected = False
-    # else:
-    #     right_lane.allx = rightx
-    #     right_lane.ally = righty
+    print(len(leftx),len(rightx))
+    if (len(leftx)==len(rightx)):
+        leftx = left_lane.allx
+        lefty = left_lane.ally
+        left_lane.detected = False
+        rightx = right_lane.allx
+        righty = right_lane.ally
+        right_lane.detected = False
+    else:
+        right_lane.allx = rightx
+        right_lane.ally = righty
 
     # Fit a second order polynomial to each
     left_fit = np.polyfit(lefty, leftx, 2)
