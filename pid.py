@@ -140,10 +140,15 @@ def run_PID(robot, tau_p, tau_d, tau_i, n=1000, speed=1.0):
 def run_PID_once(robot, tau_p, tau_d, tau_i, speed=1.0):
     # TODO: your code here
     cteSum = 0
+
     cte_0 = robot.prew_y
+
+
     cte = robot.y
+    print(cte_0, cte)
     cteSum += cte
     steering = -tau_p * cte - tau_d * (cte - cte_0) - tau_i * cteSum
+    print(steering)
 
     # print("steering: {}".format(steering))
 
